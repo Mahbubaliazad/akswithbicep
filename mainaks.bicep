@@ -1,0 +1,60 @@
+@description('The name of the Managed Cluster')
+param clusterName string = 'akscluster'
+
+@description('The location of the AKS resource')
+param location string = resourceGroup().location
+
+@description('Optional DNS prefix to use with hosted k8s API FQDN')
+param dnsPrefix string
+
+@description('Disk size (in GB) to provision for each of the agent pool nodes. This value ranges from 0 to 1023. Specifying 0 will apply')
+@minValue(0)
+@maxValue(1023)
+param osDiskSizeGB int = 0
+
+@description('The number of nodes for the cluster.')
+@minValue(1)
+@maxValue(50)
+param agentCount int = 3
+
+@description('The size of the Virtual Machine.')
+param agentVMSize string = 'Standard_ds2_v3'
+
+@description('User name for the Linux Virtual Machines')
+param linuxAdminUsername string
+
+@description('Configuration all linux machines with the SSH RSA public key value')
+param sshRSAPublicKey string
+
+resource aks 'Microsoft.Containerservice/managedClusters@2024-06-01' = {
+  name: clusterName
+  location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    dnsPrefix: dnsPrefix
+    agentPoolProfiles: [
+      {
+        name: 'agentpool'
+        count: agentCount
+        vmSize: agentVMSize
+        osDiskSizeGB: osDiskSizeGB
+        osType: 'Linux'
+        mode: 'System'
+      }
+    ]
+    linuxProfile: {
+      adminUsername: linuxAdminUsername
+      ssh: {
+        publicKeys: [
+          {
+            keyData: sshRSAPublicKey
+          }
+        ]
+      }
+    }
+  }
+}
+
+output controlPlaneFQDN string = aks.properties.fqdn
