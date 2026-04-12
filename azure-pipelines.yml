@@ -1,0 +1,21 @@
+trigger:
+- none
+
+variables:
+  templatefile: '/mainaks.bicep'
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'azsub-8march(e2053be1-55d8-43c9-86af-ed4552edab97)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az group create --name $(resourceGroupName) --location $(location)
+      az deployment group create --resource-group $(resourceGroupName) \
+      	--template-file $(templateFile) \
+      	--parameters dnsPrefix=$(dnsPrefix)
+      linuxAdminUsername=$(linuxAdminUsername) sshRSAPublicKey="$(sshRSAPublicKey)"
