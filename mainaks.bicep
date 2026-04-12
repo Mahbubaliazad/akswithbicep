@@ -26,7 +26,7 @@ param linuxAdminUsername string
 @description('Configuration all linux machines with the SSH RSA public key value')
 param sshRSAPublicKey string
 
-resource aks 'Microsoft.Containerservice/managedClusters@2024-06-01' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2025-07-01' = {
   name: clusterName
   location: location
   identity: {
