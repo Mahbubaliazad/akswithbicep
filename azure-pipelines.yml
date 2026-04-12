@@ -17,6 +17,7 @@ steps:
     inlineScript: |
       az group create --name $(resourceGroupName) --location $(location)
       az deployment group create --resource-group $(resourceGroupName) \
-      	--template-file $(templateFile) \
-      	--parameters dnsPrefix=$(dnsPrefix)
-      linuxAdminUsername=$(linuxAdminUsername) sshRSAPublicKey="$(sshRSAPublicKey)"
+        --template-file $(templateFile) \
+        --parameters dnsPrefix=$(dnsPrefix) \
+        linuxAdminUsername=$(linuxAdminUsername) \
+        sshRSAPublicKey="$(sshRSAPublicKey)"
