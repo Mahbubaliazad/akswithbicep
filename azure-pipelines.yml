@@ -3,7 +3,6 @@ trigger:
 
 variables:
   templateFile: './mainaks.bicep'
-  group: vm-secrets
 
 pool:
   vmImage: ubuntu-latest
