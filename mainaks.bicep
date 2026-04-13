@@ -59,3 +59,5 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-07-01' = {
 
 // Output the FQDN of the AKS cluster's control plane - maa2
 output controlPlaneFQDN string = aks.properties.fqdn
+
+//test test1
